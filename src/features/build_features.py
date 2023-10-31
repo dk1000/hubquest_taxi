@@ -1,8 +1,12 @@
-import pandas as pd
-from sklearn.pipeline import Pipeline
+import logging
 from pathlib import Path
 
+import pandas as pd
 from geo_features import GeoDataTransformer
+from sklearn.pipeline import Pipeline
+from time_features import DateTimeTransformer
+
+logging.basicConfig(level=logging.INFO)
 
 feature_pipeline = Pipeline(
     [
@@ -13,7 +17,11 @@ feature_pipeline = Pipeline(
                 pickup_cols=["pickup_latitude", "pickup_longitude"],
                 dropoff_cols=["dropoff_latitude", "dropoff_longitude"],
             ),
-        )
+        ),
+        (
+            "datetime",
+            DateTimeTransformer(),
+        ),
     ]
 )
 
@@ -43,8 +51,8 @@ def run_test_pipeline(data_path: str, out_file_name: str):
 
 
 if __name__ == "__main__":
-    print("Building features")
-    print("Running train pipeline")
+    logging.info("Building features")
+    logging.info("Running train pipeline")
     train_data = run_train_pipeline("raw/train_data.parquet", "train_data_proc")
-    print("Running test pipeline")
+    logging.info("Running test pipeline")
     test_data = run_test_pipeline("raw/test_data.parquet", "test_data_proc")

@@ -1,6 +1,9 @@
+import argparse
+import logging
 import subprocess
 from pathlib import Path
-import argparse
+
+logging.basicConfig(level=logging.INFO)
 
 
 def get_file_path():
@@ -8,31 +11,31 @@ def get_file_path():
 
 
 def run_make_dataset():
-    print("Executing step: make dataset")
+    logging.info("Executing step: make dataset")
     path = get_file_path() / "data" / "make_dataset.py"
     subprocess.run(["python", path])
-    print("Finished step: make dataset")
+    logging.info("Finished step: make dataset")
 
 
 def run_build_features():
-    print("Executing step: build features")
+    logging.info("Executing step: build features")
     path = get_file_path() / "features" / "build_features.py"
     subprocess.run(["python", path])
-    print("Finished step: build features")
+    logging.info("Finished step: build features")
 
 
 def run_train_model():
-    print("Executing step: train model")
+    logging.info("Executing step: train model")
     path = get_file_path() / "models" / "train_model.py"
     subprocess.run(["python", path])
-    print("Finished step: train model")
+    logging.info("Finished step: train model")
 
 
 def run_predict_model():
-    print("Executing step: predict model")
+    logging.info("Executing step: predict model")
     path = get_file_path() / "models" / "predict_model.py"
     subprocess.run(["python", path])
-    print("Finished step: predict model")
+    logging.info("Finished step: predict model")
 
 
 if __name__ == "__main__":
@@ -51,4 +54,4 @@ if __name__ == "__main__":
     if args.predict_model is True:
         run_predict_model()
     else:
-        print("Nothing to run")
+        logging.info("Nothing to run")
