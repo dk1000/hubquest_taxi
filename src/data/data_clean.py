@@ -10,7 +10,8 @@ class DataCleaner(BaseEstimator, TransformerMixin):
     Description: Class that removes bad/missing/outlier data from the training set
     """
 
-    def __init__(self):
+    def __init__(self, cols_to_check_na: list = None):
+        self.cols_to_check_na = cols_to_check_na
         pass
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
@@ -37,6 +38,6 @@ class DataCleaner(BaseEstimator, TransformerMixin):
                     inclusive="right",
                 )
             )
-        ]
+        ].dropna(subset=self.cols_to_check_na)
         print(f"Output data: {len(X)} observations")
         return X
