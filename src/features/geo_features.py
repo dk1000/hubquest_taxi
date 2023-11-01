@@ -19,13 +19,14 @@ class GeoDataTransformer(BaseEstimator, TransformerMixin):
     # pickup_cols = ["pickup_latitude", "pickup_longitude"]
     # dropoff_cols = ["dropoff_latitude", "dropoff_longitude"]
 
-    def __init__(self):
-        pass
+    def __init__(self, pickup_cols: list, dropoff_cols: list):
+        self.pickup_cols = pickup_cols
+        self.dropoff_cols = dropoff_cols
 
-    def fit(self, X: pd.DataFrame, y: pd.Series=None):
+    def fit(self, X: pd.DataFrame, y: pd.Series = None):
         return self
 
-    def transform(self, X: pd.DataFrame, pickup_cols: list, dropoff_cols: list) -> pd.DataFrame:
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         metrics = [
             distance.braycurtis,
             distance.chebyshev,
@@ -33,14 +34,14 @@ class GeoDataTransformer(BaseEstimator, TransformerMixin):
             distance.cosine,
             distance.euclidean,
             distance.sqeuclidean,
-            haversine
+            haversine,
         ]
 
         for function in metrics:
-            X[f'distance_{function.__name__}'] = X.apply(
+            X[f"distance_{function.__name__}"] = X.apply(
                 lambda row: function(
-                    [row[pickup_cols[0]], row[pickup_cols[1]]],
-                    [row[dropoff_cols[0]], row[dropoff_cols[1]]],
+                    [row[self.pickup_cols[0]], row[self.pickup_cols[1]]],
+                    [row[self.dropoff_cols[0]], row[self.dropoff_cols[1]]],
                 ),
                 axis=1,
             )
