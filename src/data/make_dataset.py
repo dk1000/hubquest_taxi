@@ -1,10 +1,25 @@
+import pandas as pd
+
 from data_split import train_test_split
+from data_clean import DataCleaner
+
+from sklearn.pipeline import Pipeline
+from pathlib import Path
+
+preparation_pipeline = Pipeline([("cleaner", DataCleaner())])
+
+
+def save_processed_training_data(data: pd.DataFrame, out_file_name: str):
+    data_path = Path(__file__).parent.parent.parent / "data" / "interim" / (out_file_name + ".parquet")
+    data.to_parquet(data_path)
 
 
 if __name__ == "__main__":
     print("Making dataset")
-    print("Splitting data into train and test sets")
     # TODO: arguments reading from config file
-    train_test_split(
+    train_data, test_data = train_test_split(
         input_file="final_taxi_data.parquet", test_size=0.3, save_files=True, output_files=("train_data", "test_data")
     )
+
+    train_data_prepared = preparation_pipeline.fit_transform(train_data)
+    save_processed_training_data(train_data_prepared, "train_data_clean")
