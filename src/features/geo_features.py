@@ -1,4 +1,5 @@
 import logging
+
 import pandas as pd
 from haversine import haversine
 from scipy.spatial import distance
@@ -14,10 +15,6 @@ class GeoDataTransformer(BaseEstimator, TransformerMixin):
     Description: Geographical long and lat data used to
     calculate distance metrics between observations in 2D space
     """
-
-    # those should be passed in Pipeline
-    # pickup_cols = ["pickup_latitude", "pickup_longitude"]
-    # dropoff_cols = ["dropoff_latitude", "dropoff_longitude"]
 
     def __init__(self, pickup_cols: list, dropoff_cols: list):
         self.pickup_cols = pickup_cols
