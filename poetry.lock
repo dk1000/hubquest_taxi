@@ -12,6 +12,20 @@ files = [
 ]
 
 [[package]]
+name = "holidays"
+version = "0.35"
+description = "Generate and work with holidays in Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "holidays-0.35-py3-none-any.whl", hash = "sha256:3e179ff248f86dee813160c92e2c4babe3bb3c732287499430d1e3ee90c15f16"},
+    {file = "holidays-0.35.tar.gz", hash = "sha256:e62b797ca3ba2366093458cda0cde33d65e7168be8104815b4149afd4ea4a9ed"},
+]
+
+[package.dependencies]
+python-dateutil = "*"
+
+[[package]]
 name = "joblib"
 version = "1.3.2"
 description = "Lightweight pipelining with Python functions"
@@ -383,4 +397,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "e1f9dee6699864095fc3e2c4da34e4bbf7c21ca4f0e237d4a81d8bbc52cd2f95"
+content-hash = "9e45316a8db60ee9ace7a1e011ea6ba986866352099c9fb9033a3408577ede3f"
