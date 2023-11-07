@@ -2,6 +2,7 @@ import argparse
 import logging
 import subprocess
 from pathlib import Path
+
 from src.data.make_dataset import DatasetMaker
 
 logging.basicConfig(level=logging.INFO)

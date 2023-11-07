@@ -2,9 +2,10 @@ import logging
 from pathlib import Path
 
 import pandas as pd
+from sklearn.pipeline import Pipeline
+
 from src.data.data_clean import DataCleaner
 from src.data.data_split import train_test_split
-from sklearn.pipeline import Pipeline
 
 logging.basicConfig(level=logging.INFO)
 
