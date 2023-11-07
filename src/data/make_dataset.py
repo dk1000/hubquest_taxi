@@ -14,7 +14,7 @@ class DatasetMaker:
     """
     Author: Igor Adamiec
     Date: 7.11.2023
-    Description
+    Description: Class to split data into train and test sets, and to clean the train set from the bad data and outliers
     """
 
     def __init__(
