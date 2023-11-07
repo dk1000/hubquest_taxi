@@ -2,6 +2,7 @@ import argparse
 import logging
 import subprocess
 from pathlib import Path
+from src.data.make_dataset import DatasetMaker
 
 logging.basicConfig(level=logging.INFO)
 
@@ -45,13 +46,22 @@ if __name__ == "__main__":
     parser.add_argument("--train_model", type=bool)
     parser.add_argument("--predict_model", type=bool)
     args = parser.parse_args()
+
+    dataset_maker = DatasetMaker(
+        input_file_name="final_taxi_data",
+        test_size=0.3,
+        save_files=True,
+        output_train_test_file_names=("train_data", "test_data"),
+        output_cleaned_file_name="train_data_clean",
+    )
+
     if args.make_dataset is True:
-        run_make_dataset()
+        train_data, test_data, _ = dataset_maker.make_dataset()
     if args.build_features is True:
         run_build_features()
     if args.train_model is True:
         run_train_model()
     if args.predict_model is True:
         run_predict_model()
-    else:
+    elif not any([args.make_dataset, args.build_features, args.train_model, args.train_model]):
         logging.info("Nothing to run")
