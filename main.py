@@ -12,13 +12,6 @@ def get_file_path():
     return Path().cwd() / "src"
 
 
-def run_make_dataset():
-    logging.info("Executing step: make dataset")
-    path = get_file_path() / "data" / "make_dataset.py"
-    subprocess.run(["python", path])
-    logging.info("Finished step: make dataset")
-
-
 def run_build_features():
     logging.info("Executing step: build features")
     path = get_file_path() / "features" / "build_features.py"
