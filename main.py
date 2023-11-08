@@ -7,6 +7,17 @@ from src.data.make_dataset import DatasetMaker
 
 logging.basicConfig(level=logging.INFO)
 
+config = {
+    "make_dataset": {
+        "input_file_name": "final_taxi_data",
+        "test_size": 0.3,
+        "save_files": True,
+        "output_train_test_file_names": ("train_data", "test_data"),
+        "output_cleaned_file_name": "train_data_clean",
+        "cleaner_cols_to_check_na": None,
+    }
+}
+
 
 def get_file_path():
     return Path().cwd() / "src"
@@ -41,21 +52,15 @@ if __name__ == "__main__":
     parser.add_argument("--predict_model", type=bool)
     args = parser.parse_args()
 
-    dataset_maker = DatasetMaker(
-        input_file_name="final_taxi_data",
-        test_size=0.3,
-        save_files=True,
-        output_train_test_file_names=("train_data", "test_data"),
-        output_cleaned_file_name="train_data_clean",
-    )
+    dataset_maker = DatasetMaker(**config["make_dataset"])
 
-    if args.make_dataset is True:
+    if args.make_dataset:
         train_data, test_data, _ = dataset_maker.make_dataset()
-    if args.build_features is True:
+    if args.build_features:
         run_build_features()
-    if args.train_model is True:
+    if args.train_model:
         run_train_model()
-    if args.predict_model is True:
+    if args.predict_model:
         run_predict_model()
     elif not any([args.make_dataset, args.build_features, args.train_model, args.predict_model]):
         logging.info("Nothing to run")
