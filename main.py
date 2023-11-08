@@ -64,5 +64,5 @@ if __name__ == "__main__":
         run_train_model()
     if args.predict_model is True:
         run_predict_model()
-    elif not any([args.make_dataset, args.build_features, args.train_model, args.train_model]):
+    elif not any([args.make_dataset, args.build_features, args.train_model, args.predict_model]):
         logging.info("Nothing to run")
