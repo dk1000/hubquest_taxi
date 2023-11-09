@@ -10,7 +10,10 @@ class DataCleaner(BaseEstimator, TransformerMixin):
     Description: Class that removes bad/missing/outlier data from the training set
     """
 
-    def __init__(self, cols_to_check_na: list = None, iqr_par: float = 1.5):
+    def __init__(self, iqr_par: float, cols_to_check_na: list = None):
+        if cols_to_check_na == "None":
+            cols_to_check_na = None
+
         self.cols_to_check_na = cols_to_check_na
         self.iqr_par = iqr_par
         pass

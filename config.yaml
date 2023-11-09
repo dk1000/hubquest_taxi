@@ -1,0 +1,16 @@
+general:
+  make_dataset: True
+  build_features: True
+  train_model: False
+  test_model: False
+make_dataset:
+  input_file_name: final_taxi_data
+  test_size: 0.3
+  save_files: True
+  output_train_test_file_names:
+    - train_data
+    - test_data
+  output_cleaned_file_name: train_data_clean
+  cleaner_cols_to_check_na: None
+  iqr_par: 1.5
+

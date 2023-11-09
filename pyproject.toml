@@ -13,6 +13,7 @@ numpy = {version = "^1.25.2", python="^3.10,<3.13"}
 pandas = "^2.1.2"
 pyarrow = "^13.0.0"
 holidays = "^0.35"
+pyaml = "^23.9.7"
 
 
 [build-system]

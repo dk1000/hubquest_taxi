@@ -4,13 +4,12 @@ import pandas as pd
 
 
 def train_test_split(
-    input_file: str = "final_taxi_data.parquet",
-    test_size: float = 0.3,
-    save_files: bool = True,
-    output_files: tuple = ("train_data", "test_data"),
+    input_file: str,
+    test_size: float,
+    save_files: bool,
+    output_files: list,
 ):
     print("Splitting data into train and test sets")
-
     data_path = Path(__file__).parent.parent.parent / "data" / "raw"
     print(data_path)
     df = pd.read_parquet(data_path / input_file).sort_values("pickup_datetime").reset_index(drop=True)
