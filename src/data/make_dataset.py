@@ -22,6 +22,7 @@ class DatasetMaker:
         input_file_name: str,
         test_size: float,
         save_files: bool,
+        iqr_par: float,
         output_train_test_file_names: tuple = None,
         output_cleaned_file_name: str = None,
         cleaner_cols_to_check_na: list = None,
@@ -31,8 +32,8 @@ class DatasetMaker:
         self.save_files = save_files
         self.output_train_test_file_names = output_train_test_file_names
         self.output_cleaned_file_name = output_cleaned_file_name
-        self.preparation_pipeline = Pipeline([("cleaner", DataCleaner())]).set_params(
-            cleaner__cols_to_check_na=cleaner_cols_to_check_na
+        self.preparation_pipeline = Pipeline(
+            [("cleaner", DataCleaner(iqr_par=iqr_par, cols_to_check_na=cleaner_cols_to_check_na))]
         )
 
     def make_dataset(self):
