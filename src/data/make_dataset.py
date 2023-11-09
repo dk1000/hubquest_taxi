@@ -43,9 +43,17 @@ class DatasetMaker:
             data.to_parquet(data_path)
 
         logging.info("Start - Making Dataset")
-        logging.info("Step 1. Splitting data into train and test sets")
+        input_path = Path(__file__).parent.parent.parent / "data" / "raw" / self.input_file_name
+        data = pd.read_parquet(input_path)
+        logging.info("Step 1. Running cleaning pipeline on data")
+        data = self.preparation_pipeline.fit_transform(data)
+
+        if self.save_files:
+            save_processed_training_data(data, self.output_cleaned_file_name)
+
+        logging.info("Step 2. Splitting data into train and test sets")
         train_data, test_data = train_test_split(
-            input_file=self.input_file_name,
+            input_df=data,
             test_size=self.test_size,
             save_files=self.save_files,
             output_files=self.output_train_test_file_names,

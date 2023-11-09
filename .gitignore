@@ -114,6 +114,9 @@ venv.bak/
 .vscode
 
 # data
+data/interim
+data/raw
+data/processed
 *.csv
 *.xlsx
 *.json

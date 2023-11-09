@@ -2,57 +2,75 @@ import logging
 from pathlib import Path
 
 import pandas as pd
-from geo_features import GeoDataTransformer
 from sklearn.pipeline import Pipeline
-from time_features import DateTimeTransformer
+
+from src.features.geo_features import GeoDataTransformer
+from src.features.time_features import DateTimeTransformer
 
 logging.basicConfig(level=logging.INFO)
 
-feature_pipeline = Pipeline(
-    [
-        (
-            "geodata",
-            GeoDataTransformer(
-                # TODO: arguments to be passed from config.yml file
-                pickup_cols=["pickup_latitude", "pickup_longitude"],
-                dropoff_cols=["dropoff_latitude", "dropoff_longitude"],
-            ),
-        ),
-        (
-            "datetime",
-            DateTimeTransformer(),
-        ),
-    ]
-)
 
+class FeaturesBuilder:
+    def __init__(
+        self,
+        pickup_cols: list,
+        dropoff_cols: list,
+        input_train_data: str,
+        input_test_data: str,
+        save_data: bool,
+        output_file_names: list,
+    ):
+        self.feature_pipeline = Pipeline(
+            [
+                (
+                    "geodata",
+                    GeoDataTransformer(
+                        pickup_cols=pickup_cols,
+                        dropoff_cols=dropoff_cols,
+                    ),
+                ),
+                (
+                    "datetime",
+                    DateTimeTransformer(),
+                ),
+            ]
+        )
+        self.input_train_data = input_train_data
+        self.input_test_data = input_test_data
+        self.save_data = save_data
+        self.output_file_names = output_file_names
 
-def load_data(data_path: str):
-    path = (Path(__file__).parent.parent.parent / "data").joinpath(data_path)
-    return pd.read_parquet(path)
+    def load_data(self):
+        logging.info("Loading input data from files")
+        path = Path(__file__).parent.parent.parent / "data"
+        train_data = pd.read_parquet(path.joinpath(self.input_train_data + ".parquet"))
+        test_data = pd.read_parquet(path.joinpath(self.input_test_data + ".parquet"))
+        return train_data, test_data
 
+    def save_processed_data(self, train_data: pd.DataFrame, test_data: pd.DataFrame):
+        logging.info("Saving processed data to files")
+        path = Path(__file__).parent.parent.parent / "data" / "processed"
+        train_data.to_parquet(path.joinpath(self.output_file_names[0] + ".parquet"))
+        logging.info(f"Saved processed train data to {str(path.joinpath(self.output_file_names[0] + '.parquet'))}")
+        test_data.to_parquet(path.joinpath(self.output_file_names[1] + ".parquet"))
+        logging.info(f"Saved processed test data to {str(path.joinpath(self.output_file_names[1] + '.parquet'))}")
 
-def save_data(file: pd.DataFrame, file_name: str):
-    path = Path(__file__).parent.parent.parent / "data" / "processed" / (file_name + ".parquet")
-    file.to_parquet(path)
+    def run_train_pipeline(self, train_data):
+        train_data_prep = self.feature_pipeline.fit_transform(train_data)
+        return train_data_prep
 
+    def run_test_pipeline(self, test_data):
+        logging.info("Running test pipeline")
+        test_data_prep = self.feature_pipeline.transform(test_data)
+        return test_data_prep
 
-def run_train_pipeline(data_path: str, out_file_name: str):
-    train_data = load_data(data_path)
-    train_data_prep = feature_pipeline.fit_transform(train_data)
-    save_data(train_data_prep, out_file_name)
-    return train_data_prep
-
-
-def run_test_pipeline(data_path: str, out_file_name: str):
-    test_data = load_data(data_path)
-    test_data_prep = feature_pipeline.transform(test_data)
-    save_data(test_data_prep, out_file_name)
-    return test_data_prep
-
-
-if __name__ == "__main__":
-    logging.info("Building features")
-    logging.info("Running train pipeline")
-    train_data = run_train_pipeline("raw/train_data.parquet", "train_data_proc")
-    logging.info("Running test pipeline")
-    test_data = run_test_pipeline("raw/test_data.parquet", "test_data_proc")
+    def build_features(self, train_data, test_data):
+        logging.info("Start - Building Features")
+        logging.info("Step 1. Running train pipeline")
+        train_data_prep = self.run_train_pipeline(train_data)
+        logging.info("Step 2. Running test pipeline")
+        test_data_prep = self.run_test_pipeline(test_data)
+        if self.save_data:
+            self.save_processed_data(train_data_prep, test_data_prep)
+        logging.info("End - building Features")
+        return train_data_prep, test_data_prep

@@ -13,4 +13,17 @@ make_dataset:
   output_cleaned_file_name: train_data_clean
   cleaner_cols_to_check_na: None
   iqr_par: 1.5
+build_features:
+  pickup_cols:
+    - pickup_latitude
+    - pickup_longitude
+  dropoff_cols:
+    - dropoff_latitude
+    - dropoff_longitude
+  input_train_data: interim/train_data_clean
+  input_test_data: raw/test_data
+  save_data: True
+  output_file_names:
+    - train_data_processed
+    - test_data_processed
 
