@@ -1,3 +1,5 @@
+import logging
+
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
@@ -22,8 +24,8 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None):
-        print("Cleaning the data")
-        print(f"Input data: {len(X)} observations")
+        logging.info("Cleaning the data")
+        logging.info(f"Input data: {len(X)} observations")
         cols_to_iqr = ["fare_amount", "trip_distance"]
         iqr_dict = {col: np.nanquantile(X[col], q=[0.25, 0.75]) for col in cols_to_iqr}
 
@@ -51,5 +53,5 @@ class DataCleaner(BaseEstimator, TransformerMixin):
                 )
             )
         ].dropna(subset=self.cols_to_check_na)
-        print(f"Output data: {len(X)} observations")
+        logging.info(f"Output data: {len(X)} observations")
         return X
