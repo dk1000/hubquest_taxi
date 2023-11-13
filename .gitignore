@@ -121,6 +121,10 @@ data/processed
 *.xlsx
 *.json
 *.parquet
+*.html
+
+# models
+models/
 
 # Terraform
 .terraform/
