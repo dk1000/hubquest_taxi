@@ -1,11 +1,11 @@
 import logging
 import subprocess
-from pathlib import Path
 
 import yaml
 
 from src.data.make_dataset import DatasetMaker
 from src.features.build_features import FeaturesBuilder
+from utils import get_file_path
 
 logging.basicConfig(level=logging.INFO)
 
@@ -14,10 +14,6 @@ with open("config.yaml", "r") as cfg:
         config = yaml.safe_load(cfg)
     except yaml.YAMLError as exc:
         logging.error(exc)
-
-
-def get_file_path():
-    return Path().cwd() / "src"
 
 
 def run_train_model():

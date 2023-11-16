@@ -3,6 +3,7 @@ general:
   build_features: True
   train_model: False
   test_model: False
+
 make_dataset:
   input_file_name: final_taxi_data
   test_size: 0.3
@@ -13,13 +14,8 @@ make_dataset:
   output_cleaned_file_name: train_data_clean
   cleaner_cols_to_check_na: None
   iqr_par: 1.5
+
 build_features:
-  pickup_cols:
-    - pickup_latitude
-    - pickup_longitude
-  dropoff_cols:
-    - dropoff_latitude
-    - dropoff_longitude
   input_train_data: interim/train_data_clean
   input_test_data: raw/test_data
   save_data: True
@@ -27,3 +23,22 @@ build_features:
     - train_data_processed
     - test_data_processed
 
+  geodata:
+    pickup_cols:
+      - pickup_latitude
+      - pickup_longitude
+    dropoff_cols:
+      - dropoff_latitude
+      - dropoff_longitude
+
+  clusters_location:
+    n_clusters: 15
+    force_retrain: False
+    model_dir: "cluster_districts"
+    geodata_columns:
+      pickup_cols:
+        - pickup_longitude
+        - pickup_latitude
+      dropoff_cols:
+        - dropoff_longitude
+        - dropoff_latitude

@@ -1,11 +1,11 @@
 import logging
-from pathlib import Path
 
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
 from src.data.data_clean import DataCleaner
 from src.data.data_split import train_test_split
+from utils import get_data_path
 
 logging.basicConfig(level=logging.INFO)
 
@@ -38,12 +38,12 @@ class DatasetMaker:
 
     def make_dataset(self):
         def save_processed_training_data(data: pd.DataFrame, out_file_name: str):
-            data_path = Path(__file__).parent.parent.parent / "data" / "interim" / (out_file_name + ".parquet")
+            data_path = get_data_path() / "interim" / (out_file_name + ".parquet")
             logging.info(f"Cleaned train data saved into directory {str(data_path)}")
             data.to_parquet(data_path)
 
         logging.info("Start - Making Dataset")
-        input_path = Path(__file__).parent.parent.parent / "data" / "raw" / self.input_file_name
+        input_path = get_data_path() / "raw" / self.input_file_name
         data = pd.read_parquet(input_path)
         logging.info("Step 1. Running cleaning pipeline on data")
         data = self.preparation_pipeline.fit_transform(data)
