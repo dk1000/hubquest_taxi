@@ -34,7 +34,8 @@ build_features:
   clusters_location:
     n_clusters: 15
     force_retrain: False
-    model_dir: "cluster_districts"
+    model_dir: cluster_districts
+    token: pk.eyJ1IjoiZHhrMDExMSIsImEiOiJjbG5rMnZiMWcwajR4MmpzMzBtbWh4MzUxIn0.Awp5L80wu7nmpdGvOoCunw
     geodata_columns:
       pickup_cols:
         - pickup_longitude
@@ -42,3 +43,14 @@ build_features:
       dropoff_cols:
         - dropoff_longitude
         - dropoff_latitude
+
+  clusters_trip:
+    n_clusters: 45
+    force_retrain: False
+    model_dir: trip_districts
+    token: pk.eyJ1IjoiZHhrMDExMSIsImEiOiJjbG5rMnZiMWcwajR4MmpzMzBtbWh4MzUxIn0.Awp5L80wu7nmpdGvOoCunw
+    clustering_columns:
+      - pickup_longitude
+      - pickup_latitude
+      - dropoff_longitude
+      - dropoff_latitude
