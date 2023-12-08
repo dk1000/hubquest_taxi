@@ -2,6 +2,8 @@ import logging
 
 import pandas as pd
 from sklearn.pipeline import Pipeline
+import joblib
+import os
 
 from src.features.cluster_features import ClusterLocationTransformer, ClusterTripTransformer
 from src.features.geo_features import GeoDataTransformer
@@ -21,6 +23,8 @@ class FeaturesBuilder:
         input_test_data: str,
         save_data: bool,
         output_file_names: list,
+        pipeline_dir: str,
+        cols_to_drop: list = None,
     ):
         self.feature_pipeline = Pipeline(
             [
@@ -46,12 +50,20 @@ class FeaturesBuilder:
         self.input_test_data = input_test_data
         self.save_data = save_data
         self.output_file_names = output_file_names
+        self.cols_to_drop = cols_to_drop
+        self.pipeline_dir = pipeline_dir
+        self.pipeline_path = get_data_path() / pipeline_dir
+        self.pipeline_name = f"feature_pipeline_{clusters_location['n_clusters']}_{clusters_trip['n_clusters']}.pkl"
 
     def load_data(self):
         logging.info("Loading input data from files")
         path = get_data_path()
-        train_data = pd.read_parquet(path.joinpath(self.input_train_data + ".parquet"))
-        test_data = pd.read_parquet(path.joinpath(self.input_test_data + ".parquet"))
+        train_data = (
+            pd.read_parquet(path.joinpath(self.input_train_data + ".parquet")).drop(columns=self.cols_to_drop).fillna(0)
+        )
+        test_data = (
+            pd.read_parquet(path.joinpath(self.input_test_data + ".parquet")).drop(columns=self.cols_to_drop).fillna(0)
+        )
         return train_data, test_data
 
     def save_processed_data(self, train_data: pd.DataFrame, test_data: pd.DataFrame):
@@ -71,6 +83,12 @@ class FeaturesBuilder:
         test_data_prep = self.feature_pipeline.transform(test_data)
         return test_data_prep
 
+    def save_pipeline(self):
+        logging.info("Saving pipeline to the file")
+        if not os.path.exists(self.pipeline_path):
+            os.makedirs(self.pipeline_path)
+        joblib.dump(self.feature_pipeline, self.pipeline_path / self.pipeline_name)
+
     def build_features(self, train_data, test_data):
         logging.info("Start - Building Features")
         logging.info("Step 1. Running train pipeline")
@@ -79,5 +97,6 @@ class FeaturesBuilder:
         test_data_prep = self.run_test_pipeline(test_data)
         if self.save_data:
             self.save_processed_data(train_data_prep, test_data_prep)
+            self.save_pipeline()
         logging.info("End - building Features")
         return train_data_prep, test_data_prep

@@ -1,7 +1,7 @@
 general:
   make_dataset: True
   build_features: True
-  train_model: False
+  train_model: True
   test_model: False
 
 make_dataset:
@@ -22,6 +22,21 @@ build_features:
   output_file_names:
     - train_data_processed
     - test_data_processed
+
+  cols_to_drop:
+    - passenger_count
+    - trip_distance
+    - ratecodeid
+    - store_and_fwd_flag
+    - extra
+    - mta_tax
+    - tip_amount
+    - tolls_amount
+    - total_amount
+    - vendor_id
+    - dropoff_datetime
+    - imp_surcharge
+  pipeline_dir: pipelines
 
   geodata:
     pickup_cols:
