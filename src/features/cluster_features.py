@@ -82,6 +82,7 @@ class ClusterLocationTransformer(ClusterBase):
         self.geodata_columns = geodata_columns
         self.pickup_cols = geodata_columns["pickup_cols"]
         self.dropoff_cols = geodata_columns["dropoff_cols"]
+        logging.info("Cluster Location features calculation.")
 
     def prepare_data(self, input_data) -> pd.DataFrame:
         """An empty shell for data preparation"""
@@ -147,6 +148,7 @@ class ClusterTripTransformer(ClusterBase):
 
         self.model_name = f"trip_cluster_model_{self.n_clusters}.pkl"
         self.clustering_columns = clustering_columns
+        logging.info("Cluster Trip features calculation.")
 
     def prepare_data(self, input_data) -> pd.DataFrame:
         """An empty shell for data preparation"""
