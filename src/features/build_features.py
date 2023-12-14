@@ -6,6 +6,7 @@ from sklearn.pipeline import Pipeline
 from src.features.cluster_features import ClusterLocationTransformer, ClusterTripTransformer
 from src.features.geo_features import GeoDataTransformer
 from src.features.time_features import DateTimeTransformer
+from src.features.trip_distance import ModelTripDistanceTransformer
 from utils import get_data_path
 
 logging.basicConfig(level=logging.INFO)
@@ -17,6 +18,7 @@ class FeaturesBuilder:
         geodata: dict,
         clusters_location: dict,
         clusters_trip: dict,
+        trip_distance_model: dict,
         input_train_data: str,
         input_test_data: str,
         save_data: bool,
@@ -39,6 +41,10 @@ class FeaturesBuilder:
                 (
                     "clusters_trip_info",
                     ClusterTripTransformer(**clusters_trip),
+                ),
+                (
+                    "model_trip_distance",
+                    ModelTripDistanceTransformer(**trip_distance_model),
                 ),
             ]
         )
