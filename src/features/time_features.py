@@ -34,6 +34,7 @@ class DateTimeTransformer(BaseEstimator, TransformerMixin):
     """
 
     def __init__(self):
+        logging.info("DateTime features calculation.")
         pass
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):

@@ -19,6 +19,7 @@ class GeoDataTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, pickup_cols: list, dropoff_cols: list):
         self.pickup_cols = pickup_cols
         self.dropoff_cols = dropoff_cols
+        logging.info("Geographical Distance features calculation.")
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
         return self
