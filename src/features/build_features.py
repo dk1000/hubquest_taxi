@@ -94,6 +94,7 @@ class FeaturesBuilder:
         if not os.path.exists(self.pipeline_path):
             os.makedirs(self.pipeline_path)
         joblib.dump(self.feature_pipeline, self.pipeline_path / self.pipeline_name)
+        logging.info(f"Pipeline saved as {self.pipeline_path / self.pipeline_name}")
 
     def build_features(self, train_data, test_data):
         logging.info("Start - Building Features")
