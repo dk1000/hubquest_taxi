@@ -1,4 +1,5 @@
 import logging
+import hashlib
 
 import pandas as pd
 from sklearn.pipeline import Pipeline
@@ -26,7 +27,7 @@ class FeaturesBuilder:
         save_data: bool,
         output_file_names: list,
         pipeline_dir: str,
-        cols_to_drop: list = None,
+        cols_to_keep: list = None,
     ):
         self.feature_pipeline = Pipeline(
             [
@@ -56,20 +57,19 @@ class FeaturesBuilder:
         self.input_test_data = input_test_data
         self.save_data = save_data
         self.output_file_names = output_file_names
-        self.cols_to_drop = cols_to_drop
+        self.cols_to_keep = cols_to_keep
         self.pipeline_dir = pipeline_dir
         self.pipeline_path = get_data_path() / pipeline_dir
-        self.pipeline_name = f"feature_pipeline_{clusters_location['n_clusters']}_{clusters_trip['n_clusters']}.pkl"
+
+        params = str(geodata) + str(clusters_location) + str(clusters_trip) + str(trip_distance_model)
+        params_md5 = hashlib.md5(params.encode("utf-8")).hexdigest()
+        self.pipeline_name = f"{params_md5}.pkl"
 
     def load_data(self):
         logging.info("Loading input data from files")
         path = get_data_path()
-        train_data = (
-            pd.read_parquet(path.joinpath(self.input_train_data + ".parquet")).drop(columns=self.cols_to_drop).fillna(0)
-        )
-        test_data = (
-            pd.read_parquet(path.joinpath(self.input_test_data + ".parquet")).drop(columns=self.cols_to_drop).fillna(0)
-        )
+        train_data = pd.read_parquet(path.joinpath(self.input_train_data + ".parquet"))[self.cols_to_keep].fillna(0)
+        test_data = pd.read_parquet(path.joinpath(self.input_test_data + ".parquet"))[self.cols_to_keep].fillna(0)
         return train_data, test_data
 
     def save_processed_data(self, train_data: pd.DataFrame, test_data: pd.DataFrame):
@@ -99,9 +99,9 @@ class FeaturesBuilder:
     def build_features(self, train_data, test_data):
         logging.info("Start - Building Features")
         logging.info("Step 1. Running train pipeline")
-        train_data_prep = self.run_train_pipeline(train_data)
+        train_data_prep = self.run_train_pipeline(train_data[self.cols_to_keep].fillna(0))
         logging.info("Step 2. Running test pipeline")
-        test_data_prep = self.run_test_pipeline(test_data)
+        test_data_prep = self.run_test_pipeline(test_data[self.cols_to_keep].fillna(0))
         if self.save_data:
             self.save_processed_data(train_data_prep, test_data_prep)
             self.save_pipeline()
