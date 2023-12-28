@@ -10,7 +10,7 @@ from src.features.cluster_features import ClusterLocationTransformer, ClusterTri
 from src.features.geo_features import GeoDataTransformer
 from src.features.time_features import DateTimeTransformer
 from src.features.trip_distance import ModelTripDistanceTransformer
-from utils import get_data_path
+from utils import get_model_path, get_data_path
 
 logging.basicConfig(level=logging.INFO)
 
@@ -59,7 +59,7 @@ class FeaturesBuilder:
         self.output_file_names = output_file_names
         self.cols_to_keep = cols_to_keep
         self.pipeline_dir = pipeline_dir
-        self.pipeline_path = get_data_path() / pipeline_dir
+        self.pipeline_path = get_model_path() / pipeline_dir
 
         params = str(geodata) + str(clusters_location) + str(clusters_trip) + str(trip_distance_model)
         params_md5 = hashlib.md5(params.encode("utf-8")).hexdigest()
