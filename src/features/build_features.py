@@ -1,17 +1,18 @@
-import logging
 import hashlib
-
-import pandas as pd
-from sklearn.pipeline import Pipeline
-import joblib
+import logging
 import os
 
-from src.features.cluster_features import ClusterLocationTransformer, ClusterTripTransformer
+import joblib
+import pandas as pd
+from sklearn.pipeline import Pipeline
+
+from src.features.cluster_features import (ClusterLocationTransformer,
+                                           ClusterTripTransformer)
+from src.features.dtype_converter import DtypeConverter
 from src.features.geo_features import GeoDataTransformer
 from src.features.time_features import DateTimeTransformer
 from src.features.trip_distance import ModelTripDistanceTransformer
-from src.features.dtype_converter import DtypeConverter
-from utils import get_model_path, get_data_path
+from utils import get_data_path, get_model_path
 
 logging.basicConfig(level=logging.INFO)
 
