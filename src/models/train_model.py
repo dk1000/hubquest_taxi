@@ -165,8 +165,6 @@ class ModelTrainer:
                 for d in dirs:
                     shutil.rmtree(os.path.join(root, d))
             logging.info(f"Making new model as active")
-            for root, dirs, files in os.walk(path / "active"):
-                print(files)
             joblib.dump(model, path / "active" / name)
 
         active_model = load_current_active_model()
