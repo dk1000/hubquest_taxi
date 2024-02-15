@@ -36,7 +36,7 @@ if __name__ == "__main__":
     if config["general"]["train_model"]:
         model_trainer = ModelTrainer(**config["train_model"])
         if not config["general"]["build_features"]:
-            train_data, test_data = model_trainer.load_data()
+            train_data, test_data = model_trainer.load_data(*config["build_features"]["output_file_names"])
         model_trainer.run_model_training(train_data, test_data)
     if config["general"]["test_model"]:
         run_predict_model()
