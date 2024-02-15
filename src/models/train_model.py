@@ -1,25 +1,20 @@
-import hashlib
 import logging
-import os
-import shutil
-from datetime import datetime
 
-import joblib
 import optuna
 import pandas as pd
 from catboost import CatBoostRegressor
 from lightgbm import LGBMRegressor
 from sklearn.model_selection import TimeSeriesSplit, cross_val_score
 
-from utils import get_data_path, get_model_path
 from src.models.model_utils import (
-    save_model,
+    compare_current_model_with_active,
     eval_model,
     hash_model_name,
     load_current_active_model,
+    save_model,
     set_model_as_active,
-    compare_current_model_with_active,
 )
+from utils import get_data_path, get_model_path
 
 logging.basicConfig(level=logging.INFO)
 

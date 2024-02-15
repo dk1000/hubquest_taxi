@@ -1,10 +1,11 @@
-import joblib
+import hashlib
 import logging
 import os
 import shutil
-from sklearn.metrics import mean_absolute_error, r2_score
-import hashlib
 from datetime import datetime
+
+import joblib
+from sklearn.metrics import mean_absolute_error, r2_score
 
 
 def save_model(model, path, name):

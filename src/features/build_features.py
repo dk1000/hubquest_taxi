@@ -6,7 +6,8 @@ import joblib
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
-from src.features.cluster_features import ClusterLocationTransformer, ClusterTripTransformer
+from src.features.cluster_features import (ClusterLocationTransformer,
+                                           ClusterTripTransformer)
 from src.features.dtype_converter import DtypeConverter
 from src.features.geo_features import GeoDataTransformer
 from src.features.time_features import DateTimeTransformer
