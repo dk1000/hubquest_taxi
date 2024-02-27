@@ -16,6 +16,8 @@ holidays = "^0.35"
 pyaml = "^23.9.7"
 plotly = "^5.18.0"
 lightgbm = "^4.1.0"
+optuna = "^3.5.0"
+catboost = "^1.2.2"
 
 
 [build-system]

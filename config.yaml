@@ -1,6 +1,6 @@
 general:
-  make_dataset: True
-  build_features: True
+  make_dataset: False
+  build_features: False
   train_model: True
   test_model: False
 
@@ -23,14 +23,16 @@ build_features:
     - train_data_processed
     - test_data_processed
 
-  cols_to_keep:
+  pipeline_dir: pipelines
+
+  cols_to_proceed:
+    - trip_distance
     - pickup_longitude
     - pickup_latitude
     - dropoff_longitude
     - dropoff_latitude
-    - pickup_datetime
     - fare_amount
-  pipeline_dir: pipelines
+    - pickup_datetime
 
   geodata:
     pickup_cols:
@@ -84,3 +86,55 @@ build_features:
       - distance_euclidean
       - distance_sqeuclidean
       - distance_haversine
+
+train_model:
+  optim_iters: 10
+  cv_splits: 3
+  parameters:
+    LGBM:
+      num_leaves:
+        min: 20
+        max: 50
+      max_depth: [ -1, 3, 5, 10 ]
+      learning_rate:
+        min: 0.001
+        max: 0.5
+      n_estimators:
+        min: 30
+        max: 250
+    CB:
+      max_depth:
+        min: 2
+        max: 10
+      learning_rate:
+        min: 0.001
+        max: 0.5
+      n_estimators:
+        min: 30
+        max: 250
+  model_columns:
+    - pickup_longitude
+    - pickup_latitude
+    - dropoff_longitude
+    - dropoff_latitude
+    - pickup_datetime
+    - distance_braycurtis
+    - distance_chebyshev
+    - distance_cityblock
+    - distance_cosine
+    - distance_euclidean
+    - distance_sqeuclidean
+    - distance_haversine
+    - dt_month
+    - dt_weekday
+    - dt_isweekend
+    - dt_hour
+    - dt_quarter
+    - dt_day_part
+    - dt_isusholiday
+    - dt_paydays
+    - dropoff_cluster
+    - pickup_cluster
+    - trip_info_cluster
+    - trip_distance_prediction
+    - fare_amount
