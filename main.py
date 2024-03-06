@@ -5,8 +5,8 @@ import yaml
 
 from src.data.make_dataset import DatasetMaker
 from src.features.build_features import FeaturesBuilder
-from src.models.train_model import ModelTrainer
 from src.models.predict_model import ModelPredictor
+from src.models.train_model import ModelTrainer
 from utils import get_file_path
 
 logging.basicConfig(level=logging.INFO)

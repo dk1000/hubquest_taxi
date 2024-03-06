@@ -4,10 +4,9 @@ import os
 import shutil
 from datetime import datetime
 
+import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-import joblib
 from sklearn.metrics import mean_absolute_error, r2_score
 
 
