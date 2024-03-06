@@ -43,6 +43,8 @@ class DateTimeTransformer(BaseEstimator, TransformerMixin):
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         us_holidays = holidays.US()
 
+        X["pickup_datetime"] = pd.to_datetime(X["pickup_datetime"])
+
         X["dt_month"] = X["pickup_datetime"].dt.month
         X["dt_weekday"] = X["pickup_datetime"].dt.weekday + 1
         X["dt_isweekend"] = X["dt_weekday"] >= 5

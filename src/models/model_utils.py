@@ -4,6 +4,9 @@ import os
 import shutil
 from datetime import datetime
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 import joblib
 from sklearn.metrics import mean_absolute_error, r2_score
 
@@ -63,3 +66,20 @@ def compare_current_model_with_active(x, y, current_model, active_model, path, n
         set_model_as_active(current_model, path, name)
     else:
         logging.info(f"Current active model is better than new one. No changes on Active Model")
+
+
+def load_pipeline(path, params):
+    params = (
+        str(params["geodata"])
+        + str(params["clusters_location"])
+        + str(params["clusters_trip"])
+        + str(params["trip_distance_model"])
+    )
+    params_md5 = hashlib.md5(params.encode("utf-8")).hexdigest()
+    return joblib.load(path / (params_md5 + ".pkl"))
+
+
+def plot_residuals(y, preds, title):
+    residuals = y - preds
+    sns.kdeplot(residuals).set(title="Residuals " + title)
+    plt.show()

@@ -1,8 +1,8 @@
 general:
   make_dataset: False
   build_features: False
-  train_model: True
-  test_model: False
+  train_model: False
+  test_model: True
 
 make_dataset:
   input_file_name: final_taxi_data
@@ -138,3 +138,14 @@ train_model:
     - trip_info_cluster
     - trip_distance_prediction
     - fare_amount
+
+predict_model:
+  chosen_year: 2015
+  chosen_color: yellow
+  api_dict:
+    2015:
+      yellow: https://data.cityofnewyork.us/resource/2yzn-sicd.json
+      green: https://data.cityofnewyork.us/resource/gi8d-wdg5.json
+    2016:
+      yellow: https://data.cityofnewyork.us/resource/uacg-pexx.json
+      green: https://data.cityofnewyork.us/resource/hvrh-b6nb.json
