@@ -1,13 +1,8 @@
 import logging
 
-import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
-from catboost import CatBoostRegressor
-from lightgbm import LGBMRegressor
 
-from src.models.model_utils import (eval_model, load_current_active_model,
-                                    load_pipeline, plot_residuals)
+from src.models.model_utils import eval_model, load_current_active_model, load_pipeline, plot_residuals
 from utils import get_model_path
 
 logging.basicConfig(level=logging.INFO)
