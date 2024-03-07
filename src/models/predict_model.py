@@ -17,6 +17,7 @@ class ModelPredictor:
         self.predict_year = predict_params["chosen_year"]
         self.predict_color = predict_params["chosen_color"]
         self.features_params = features_params
+        self.model_metrics = tuple()
         pass
 
     def load_data(self):
@@ -31,7 +32,7 @@ class ModelPredictor:
         X = data_transformed.drop(columns=["fare_amount"])
         self.Y = data_transformed["fare_amount"]
         self.predictions = model.predict(X)
-        eval_model(model, X, self.Y, f"{self.predict_year} {self.predict_color} Taxi")
+        self.model_metrics = eval_model(model, X, self.Y, f"{self.predict_year} {self.predict_color} Taxi")
 
     def run_model_prediction(self):
         self.load_data()
