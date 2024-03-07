@@ -6,14 +6,10 @@ from catboost import CatBoostRegressor
 from lightgbm import LGBMRegressor
 from sklearn.model_selection import TimeSeriesSplit, cross_val_score
 
-from src.models.model_utils import (
-    compare_current_model_with_active,
-    eval_model,
-    hash_model_name,
-    load_current_active_model,
-    save_model,
-    set_model_as_active,
-)
+from src.models.model_utils import (compare_current_model_with_active,
+                                    eval_model, hash_model_name,
+                                    load_current_active_model, save_model,
+                                    set_model_as_active)
 from utils import get_data_path, get_model_path
 
 logging.basicConfig(level=logging.INFO)

@@ -1,12 +1,11 @@
 import logging
-import subprocess
 
 import yaml
 
 from src.data.make_dataset import DatasetMaker
 from src.features.build_features import FeaturesBuilder
+from src.models.predict_model import ModelPredictor
 from src.models.train_model import ModelTrainer
-from utils import get_file_path
 
 logging.basicConfig(level=logging.INFO)
 
@@ -15,13 +14,6 @@ with open("config.yaml", "r") as cfg:
         config = yaml.safe_load(cfg)
     except yaml.YAMLError as exc:
         logging.error(exc)
-
-
-def run_predict_model():
-    logging.info("Executing step: predict model")
-    path = get_file_path() / "models" / "predict_model.py"
-    subprocess.run(["python", path])
-    logging.info("Finished step: predict model")
 
 
 if __name__ == "__main__":
@@ -39,7 +31,8 @@ if __name__ == "__main__":
             train_data, test_data = model_trainer.load_data(*config["build_features"]["output_file_names"])
         model_trainer.run_model_training(train_data, test_data)
     if config["general"]["test_model"]:
-        run_predict_model()
+        model_predictor = ModelPredictor(config["predict_model"], config["build_features"])
+        model_predictor.run_model_prediction()
     elif not any(
         [
             config["general"]["make_dataset"],
